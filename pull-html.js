@@ -1,15 +1,4 @@
-var track  = {
-    first:0,
-    last:0,
-    nextPoint:0,
-    gainFirst:true,
-    isNotpending:false,
-    foundChunk : source,
-    mainChunk  : data,
-    end:0
-};
-
-var find = function find(source){
+var find = function find(track , source){
     var sourceLength = source.length;
     for (let i = 0; i < sourceLength; i++) {
         const e1 = source[i];
@@ -36,12 +25,25 @@ var find = function find(source){
                 var chunk = source.substr(track.nextPoint + 1);
                 track.foundChunk = chunk;
                 track.isNotpending = false;
-                return find(chunk);
+                return find(track  , chunk);
             }
         }else{
             track.end = i;
             var endChunk = track.foundChunk ;
-            return(track , track.mainChunk.substr(track.first , (track.mainChunk.length - endChunk.length ) - track.first ));
+            return(track.mainChunk.substr(track.first , (track.mainChunk.length - endChunk.length ) - track.first ));
         }
     }
 };
+var pullHTML = function($data){
+    var track  = {
+            first:0,
+            last:0,
+            nextPoint:0,
+            gainFirst:true,
+            isNotpending:false,
+            foundChunk : $data,
+            mainChunk  : $data,
+            end:0
+    };
+    return find(track , $data);
+}
